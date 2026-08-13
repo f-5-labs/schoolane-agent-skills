@@ -1,0 +1,41 @@
+{
+  "name": "schoolane",
+  "version": "0.1.0",
+  "description": "Role-aware school context and governed curriculum drafting through the authenticated SchooLane MCP server.",
+  "author": {
+    "name": "SchooLane",
+    "email": "support@schoolane.app",
+    "url": "https://schoolane.app"
+  },
+  "homepage": "https://schoolane.app/ai/mcp",
+  "repository": "https://github.com/f-5-labs/schoolane-agent-skills",
+  "keywords": [
+    "schoolane",
+    "school-administration",
+    "curriculum",
+    "lesson-planning",
+    "education",
+    "mcp"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "SchooLane",
+    "shortDescription": "Review and draft curriculum within your role",
+    "longDescription": "SchooLane gives Codex a governed school-operations connection. Inspect only the school and curriculum allowed by the signed-in user's current role, audit teaching plans, and create or update curriculum drafts without bypassing human review, approval, or publishing.",
+    "developerName": "SchooLane",
+    "category": "Education",
+    "capabilities": ["Read", "Write"],
+    "websiteURL": "https://schoolane.app",
+    "privacyPolicyURL": "https://schoolane.app/privacy",
+    "termsOfServiceURL": "https://schoolane.app/terms",
+    "defaultPrompt": [
+      "Show me the classes and curriculum I can access",
+      "Review my term scheme and identify planning gaps",
+      "Draft next week's lesson plan for one of my classes"
+    ],
+    "brandColor": "#0C6B4D",
+    "composerIcon": "./assets/icon.png",
+    "logo": "./assets/logo.png"
+  },
+  "mcpServers": "./.mcp.json"
+}

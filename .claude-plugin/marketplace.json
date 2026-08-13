@@ -1,0 +1,34 @@
+{
+  "name": "schoolane",
+  "owner": { "name": "SchooLane", "url": "https://schoolane.app" },
+  "plugins": [
+    {
+      "name": "schoolane",
+      "source": "./",
+      "description": "Role-aware school context and governed curriculum drafting through SchooLane MCP.",
+      "version": "0.1.0",
+      "skills": [
+        {
+          "name": "school-context",
+          "path": "skills/schoolane-school-context",
+          "invoke": "/schoolane:school-context"
+        },
+        {
+          "name": "term-scheme-planning",
+          "path": "skills/schoolane-term-scheme-planning",
+          "invoke": "/schoolane:term-scheme-planning"
+        },
+        {
+          "name": "lesson-plan-drafting",
+          "path": "skills/schoolane-lesson-plan-drafting",
+          "invoke": "/schoolane:lesson-plan-drafting"
+        },
+        {
+          "name": "curriculum-review",
+          "path": "skills/schoolane-curriculum-review",
+          "invoke": "/schoolane:curriculum-review"
+        }
+      ]
+    }
+  ]
+}

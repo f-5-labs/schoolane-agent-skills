@@ -1,0 +1,11 @@
+interface:
+  display_name: 'SchooLane Lesson Plans'
+  short_description: 'Draft role-scoped lesson plans for review'
+  default_prompt: 'Use $schoolane-lesson-plan-drafting to create or revise this SchooLane lesson-plan draft.'
+dependencies:
+  tools:
+    - type: 'mcp'
+      value: 'schoolane'
+      description: 'Authenticated SchooLane school operations MCP server'
+      transport: 'streamable_http'
+      url: 'https://api.schoolane.app/mcp'

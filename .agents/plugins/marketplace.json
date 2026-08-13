@@ -1,0 +1,12 @@
+{
+  "name": "schoolane",
+  "interface": { "displayName": "SchooLane" },
+  "plugins": [
+    {
+      "name": "schoolane",
+      "source": { "source": "local", "path": "." },
+      "policy": { "installation": "AVAILABLE", "authentication": "ON_INSTALL" },
+      "category": "Education"
+    }
+  ]
+}

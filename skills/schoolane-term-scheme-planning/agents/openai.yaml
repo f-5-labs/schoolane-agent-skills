@@ -1,0 +1,11 @@
+interface:
+  display_name: 'SchooLane Term Schemes'
+  short_description: 'Review and draft governed term schemes'
+  default_prompt: 'Use $schoolane-term-scheme-planning to review or draft this role-scoped SchooLane term scheme.'
+dependencies:
+  tools:
+    - type: 'mcp'
+      value: 'schoolane'
+      description: 'Authenticated SchooLane school operations MCP server'
+      transport: 'streamable_http'
+      url: 'https://api.schoolane.app/mcp'
