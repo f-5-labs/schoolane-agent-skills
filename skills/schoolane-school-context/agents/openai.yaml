@@ -1,0 +1,11 @@
+interface:
+  display_name: 'SchooLane School Context'
+  short_description: 'Inspect role-scoped school and academic context'
+  default_prompt: 'Use $schoolane-school-context to inspect the school and academic context available to my signed-in SchooLane role.'
+dependencies:
+  tools:
+    - type: 'mcp'
+      value: 'schoolane'
+      description: 'Authenticated SchooLane school operations MCP server'
+      transport: 'streamable_http'
+      url: 'https://api.schoolane.app/mcp'

@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "schoolane": {
+      "type": "http",
+      "url": "https://api.schoolane.app/mcp"
+    }
+  }
+}

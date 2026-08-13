@@ -1,0 +1,12 @@
+{
+  "name": "schoolane",
+  "version": "0.1.0",
+  "description": "Role-aware SchooLane school context, curriculum review, term-scheme planning, and lesson-plan drafting.",
+  "author": { "name": "SchooLane", "url": "https://schoolane.app" },
+  "homepage": "https://schoolane.app/ai/mcp",
+  "repository": "https://github.com/f-5-labs/schoolane-agent-skills",
+  "keywords": ["schoolane", "education", "curriculum", "lesson-planning", "mcp"],
+  "mcpServers": {
+    "schoolane": { "type": "http", "url": "https://api.schoolane.app/mcp" }
+  }
+}

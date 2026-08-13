@@ -1,0 +1,13 @@
+{
+  "$schema": "https://cursor.com/schemas/cursor-plugin/plugin.json",
+  "name": "schoolane",
+  "displayName": "SchooLane",
+  "version": "0.1.0",
+  "description": "Role-aware school context and governed curriculum drafting through SchooLane MCP.",
+  "author": { "name": "SchooLane", "email": "support@schoolane.app" },
+  "publisher": "FPoint5Labs",
+  "homepage": "https://schoolane.app/ai/mcp",
+  "repository": "https://github.com/f-5-labs/schoolane-agent-skills",
+  "category": "education",
+  "keywords": ["schoolane", "education", "curriculum", "lesson-planning", "mcp"]
+}
