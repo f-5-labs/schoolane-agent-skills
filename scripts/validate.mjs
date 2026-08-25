@@ -8,6 +8,7 @@ const expectedSkills = [
   'schoolane-lesson-plan-drafting',
   'schoolane-school-context',
   'schoolane-term-scheme-planning',
+  'schoolane-timetable-planning',
 ];
 const expectedTools = [
   'get_my_school_context',
@@ -18,6 +19,33 @@ const expectedTools = [
   'curriculum_save_term_scheme_draft',
   'curriculum_list_lesson_plans',
   'curriculum_save_lesson_plan_draft',
+  'timetable_get_planning_context',
+  'timetable_list_projects',
+  'timetable_get_project_draft',
+  'timetable_get_project_conflicts',
+  'timetable_create_project_draft',
+  'timetable_generate_project_draft',
+  'timetable_move_card_draft',
+  'timetable_set_card_pin_draft',
+  'timetable_set_teacher_unavailability_draft',
+  'timetable_update_project_settings_draft',
+  'ui_render_timetable_preview',
+];
+const documentedUnavailableTools = [
+  'timetable_publish',
+  'timetable_delete_project',
+  'timetable_import',
+  'timetable_save_full_draft',
+  'timetable_upsert_class',
+  'timetable_save_live_class',
+];
+const timetableWriteTools = [
+  'timetable_create_project_draft',
+  'timetable_generate_project_draft',
+  'timetable_move_card_draft',
+  'timetable_set_card_pin_draft',
+  'timetable_set_teacher_unavailability_draft',
+  'timetable_update_project_settings_draft',
 ];
 const saveTools = expectedTools.filter((tool) => tool.startsWith('curriculum_save_'));
 const failures = [];
@@ -99,14 +127,36 @@ async function validate() {
         match[1] === 'fetch' ||
         match[1]?.startsWith('get_') ||
         match[1]?.startsWith('academics_') ||
-        match[1]?.startsWith('curriculum_')
+        match[1]?.startsWith('curriculum_') ||
+        match[1]?.startsWith('timetable_') ||
+        match[1]?.startsWith('ui_render_')
       ) {
-        referencedTools.add(match[1]);
+        if (expectedTools.includes(match[1])) referencedTools.add(match[1]);
+        else check(
+          documentedUnavailableTools.includes(match[1]),
+          `Unknown tool reference: ${match[1]}.`
+        );
       }
     }
   }
   for (const tool of referencedTools) check(expectedTools.includes(tool), `Unknown tool reference: ${tool}.`);
   for (const tool of expectedTools) check(referencedTools.has(tool), `No skill documents registered tool: ${tool}.`);
+  const timetableSkill = await readFile(
+    path.join(root, 'skills', 'schoolane-timetable-planning', 'SKILL.md'),
+    'utf8'
+  );
+  const timetableMap = await readFile(
+    path.join(root, 'skills', 'schoolane-timetable-planning', 'references', 'tool-map.md'),
+    'utf8'
+  );
+  for (const tool of timetableWriteTools) {
+    check(timetableMap.includes(`\`${tool}\``), `Timetable map must document ${tool}.`);
+  }
+  for (const tool of documentedUnavailableTools) {
+    check(timetableSkill.includes(`\`${tool}\``), `Timetable skill must forbid ${tool}.`);
+  }
+  check(timetableSkill.includes('baseRevision'), 'Timetable skill must require revision control.');
+  check(timetableSkill.includes('idempotency key'), 'Timetable skill must require idempotency handling.');
 
   check(scenarios.version === 1, 'Eval fixture version must be 1.');
   check(scenarios.scenarios?.length >= 16, 'At least sixteen routing scenarios are required.');
@@ -114,6 +164,8 @@ async function validate() {
   for (const skill of expectedSkills) check(covered.has(skill), `${skill}: no eval coverage.`);
   const scenarioIds = scenarios.scenarios?.map((scenario) => scenario.id) ?? [];
   check(new Set(scenarioIds).size === scenarioIds.length, 'Eval scenario ids must be unique.');
+  check(scenarioIds.includes('timetable-stale-revision'), 'Timetable stale-revision behavior needs eval coverage.');
+  check(scenarioIds.includes('timetable-write-denied'), 'Timetable denied-write behavior needs eval coverage.');
   for (const scenario of scenarios.scenarios ?? []) {
     check(expectedSkills.includes(scenario.skill), `${scenario.id}: unknown skill.`);
     check(Boolean(scenario.request?.trim()), `${scenario.id}: request is required.`);

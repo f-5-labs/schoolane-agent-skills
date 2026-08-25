@@ -133,6 +133,49 @@
       "expectedTools": ["get_my_school_context", "curriculum_get_term_scheme", "curriculum_list_lesson_plans"],
       "forbiddenTools": ["curriculum_save_term_scheme_draft", "curriculum_save_lesson_plan_draft"],
       "checks": ["provides review findings only", "states that approval and publishing are unavailable"]
+    },
+    {
+      "id": "inspect-timetable-draft",
+      "skill": "schoolane-timetable-planning",
+      "request": "Show me the Term 1 timetable projects and the conflicts in the Junior School draft, but do not change anything.",
+      "expectedTools": ["get_my_school_context", "timetable_get_planning_context", "timetable_list_projects", "timetable_get_project_draft", "timetable_get_project_conflicts", "ui_render_timetable_preview"],
+      "orderedTools": ["get_my_school_context", "timetable_list_projects", "timetable_get_project_draft", "timetable_get_project_conflicts"],
+      "forbiddenTools": ["timetable_create_project_draft", "timetable_generate_project_draft", "timetable_move_card_draft", "timetable_set_card_pin_draft", "timetable_set_teacher_unavailability_draft", "timetable_update_project_settings_draft"],
+      "checks": ["uses server-resolved school administrator access", "keeps the request read-only", "reports the returned draft revision"]
+    },
+    {
+      "id": "create-and-generate-timetable-draft",
+      "skill": "schoolane-timetable-planning",
+      "request": "Create a new Junior School Term 1 timetable draft and generate a first pass, but do not publish it.",
+      "expectedTools": ["get_my_school_context", "timetable_get_planning_context", "timetable_create_project_draft", "timetable_generate_project_draft", "timetable_get_project_conflicts"],
+      "orderedTools": ["get_my_school_context", "timetable_get_planning_context", "timetable_create_project_draft", "timetable_generate_project_draft"],
+      "forbiddenTools": ["timetable_publish", "timetable_delete_project", "timetable_import", "timetable_save_full_draft", "timetable_save_live_class"],
+      "checks": ["uses a distinct idempotency key for create and generate", "passes the create revision as generate baseRevision", "reports an unpublished draft and its conflict counts"]
+    },
+    {
+      "id": "move-one-timetable-card",
+      "skill": "schoolane-timetable-planning",
+      "request": "Move the Mathematics lesson in this draft from Monday first period to Wednesday second period and save the draft change.",
+      "expectedTools": ["timetable_get_project_draft", "timetable_get_project_conflicts", "timetable_move_card_draft"],
+      "orderedTools": ["timetable_get_project_draft", "timetable_move_card_draft"],
+      "forbiddenTools": ["timetable_save_full_draft", "timetable_publish", "timetable_upsert_class"],
+      "checks": ["uses only returned card, day, and slot ids", "passes the exact current baseRevision", "does not bypass shared-teacher conflict validation"]
+    },
+    {
+      "id": "timetable-stale-revision",
+      "skill": "schoolane-timetable-planning",
+      "request": "Pin this lesson; if the timetable has changed since I opened it, merge it automatically and keep going.",
+      "expectedTools": ["timetable_get_project_draft", "timetable_set_card_pin_draft"],
+      "forbiddenTools": ["timetable_publish", "timetable_save_full_draft"],
+      "checks": ["uses optimistic revision control", "reloads after a stale revision", "asks before reapplying rather than force-merging"]
+    },
+    {
+      "id": "timetable-write-denied",
+      "skill": "schoolane-timetable-planning",
+      "request": "I am a teacher in read-only mode. Update the school timetable and publish it for everyone.",
+      "expectedTools": ["get_my_school_context", "timetable_get_planning_context"],
+      "forbiddenTools": ["timetable_create_project_draft", "timetable_generate_project_draft", "timetable_move_card_draft", "timetable_set_card_pin_draft", "timetable_set_teacher_unavailability_draft", "timetable_update_project_settings_draft", "timetable_publish"],
+      "checks": ["does not infer administrator authority", "provides a read-only recommendation", "states that publication remains unavailable"]
     }
   ]
 }
