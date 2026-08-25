@@ -6,7 +6,7 @@
       "name": "schoolane",
       "source": "./",
       "description": "Role-aware school context, curriculum drafting, and unpublished timetable planning through SchooLane MCP.",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "skills": [
         {
           "name": "school-context",
@@ -22,6 +22,11 @@
           "name": "lesson-plan-drafting",
           "path": "skills/schoolane-lesson-plan-drafting",
           "invoke": "/schoolane:lesson-plan-drafting"
+        },
+        {
+          "name": "lesson-plan-document-import",
+          "path": "skills/schoolane-lesson-plan-document-import",
+          "invoke": "/schoolane:lesson-plan-document-import"
         },
         {
           "name": "curriculum-review",

@@ -1,7 +1,7 @@
 {
   "name": "schoolane",
-  "version": "0.2.0",
-  "description": "Role-aware school context, curriculum drafting, and governed timetable drafts through the authenticated SchooLane MCP server.",
+  "version": "0.3.0",
+  "description": "Role-aware school context, document-guided curriculum drafting, and governed timetable drafts through the authenticated SchooLane MCP server.",
   "author": {
     "name": "SchooLane",
     "email": "support@schoolane.app",
@@ -20,8 +20,8 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "SchooLane",
-    "shortDescription": "Review curriculum and prepare timetable drafts",
-    "longDescription": "SchooLane gives Codex a governed school-operations connection. Inspect only the school data allowed by the signed-in user's current role, draft curriculum, and prepare unpublished timetable projects without bypassing human review or publication.",
+    "shortDescription": "Review curriculum, import lesson documents, and prepare timetable drafts",
+    "longDescription": "SchooLane gives Codex a governed school-operations connection. Inspect only the school data allowed by the signed-in user's current role, prepare reviewed curriculum drafts from lesson documents, and prepare unpublished timetable projects without bypassing human review or publication.",
     "developerName": "SchooLane",
     "category": "Education",
     "capabilities": ["Read", "Write"],
@@ -32,6 +32,7 @@
       "Show me the classes and curriculum I can access",
       "Review my term scheme and identify planning gaps",
       "Draft next week's lesson plan for one of my classes",
+      "Prepare this attached term lesson-plan document for review",
       "Prepare an unpublished timetable draft for next term"
     ],
     "brandColor": "#0C6B4D",

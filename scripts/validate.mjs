@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const expectedSkills = [
   'schoolane-curriculum-review',
+  'schoolane-lesson-plan-document-import',
   'schoolane-lesson-plan-drafting',
   'schoolane-school-context',
   'schoolane-term-scheme-planning',
@@ -19,6 +20,9 @@ const expectedTools = [
   'curriculum_save_term_scheme_draft',
   'curriculum_list_lesson_plans',
   'curriculum_save_lesson_plan_draft',
+  'curriculum_prepare_lesson_plan_import_draft',
+  'curriculum_apply_term_scheme_import_draft',
+  'curriculum_apply_lesson_plan_import_draft',
   'timetable_get_planning_context',
   'timetable_list_projects',
   'timetable_get_project_draft',
@@ -47,7 +51,13 @@ const timetableWriteTools = [
   'timetable_set_teacher_unavailability_draft',
   'timetable_update_project_settings_draft',
 ];
-const saveTools = expectedTools.filter((tool) => tool.startsWith('curriculum_save_'));
+const curriculumDraftWriteTools = [
+  'curriculum_save_term_scheme_draft',
+  'curriculum_save_lesson_plan_draft',
+  'curriculum_prepare_lesson_plan_import_draft',
+  'curriculum_apply_term_scheme_import_draft',
+  'curriculum_apply_lesson_plan_import_draft',
+];
 const failures = [];
 
 async function readJson(relativePath) {
@@ -186,8 +196,8 @@ async function validate() {
     );
     if (scenario.skill === 'schoolane-curriculum-review') {
       check(
-        saveTools.every((tool) => forbidden.has(tool)),
-        `${scenario.id}: curriculum review must forbid both draft-save tools.`
+        curriculumDraftWriteTools.every((tool) => forbidden.has(tool)),
+        `${scenario.id}: curriculum review must forbid every curriculum draft-write tool.`
       );
     }
   }
