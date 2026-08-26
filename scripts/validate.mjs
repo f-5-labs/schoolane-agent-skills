@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const expectedSkills = [
+  'schoolane-admin-operations',
   'schoolane-curriculum-review',
   'schoolane-lesson-plan-document-import',
   'schoolane-lesson-plan-drafting',
@@ -16,6 +17,9 @@ const expectedTools = [
   'search',
   'fetch',
   'academics_list_classes',
+  'fees_get_balance_summary',
+  'transport_get_operations_summary',
+  'interventions_get_dashboard_summary',
   'curriculum_get_term_scheme',
   'curriculum_save_term_scheme_draft',
   'curriculum_list_lesson_plans',
@@ -50,6 +54,11 @@ const timetableWriteTools = [
   'timetable_set_card_pin_draft',
   'timetable_set_teacher_unavailability_draft',
   'timetable_update_project_settings_draft',
+];
+const administratorReadTools = [
+  'fees_get_balance_summary',
+  'transport_get_operations_summary',
+  'interventions_get_dashboard_summary',
 ];
 const curriculumDraftWriteTools = [
   'curriculum_save_term_scheme_draft',
@@ -138,6 +147,9 @@ async function validate() {
         match[1]?.startsWith('get_') ||
         match[1]?.startsWith('academics_') ||
         match[1]?.startsWith('curriculum_') ||
+        match[1]?.startsWith('fees_') ||
+        match[1]?.startsWith('transport_') ||
+        match[1]?.startsWith('interventions_') ||
         match[1]?.startsWith('timetable_') ||
         match[1]?.startsWith('ui_render_')
       ) {
@@ -167,6 +179,13 @@ async function validate() {
   }
   check(timetableSkill.includes('baseRevision'), 'Timetable skill must require revision control.');
   check(timetableSkill.includes('idempotency key'), 'Timetable skill must require idempotency handling.');
+  const administratorMap = await readFile(
+    path.join(root, 'skills', 'schoolane-admin-operations', 'references', 'tool-map.md'),
+    'utf8'
+  );
+  for (const tool of administratorReadTools) {
+    check(administratorMap.includes(`\`${tool}\``), `Administrator map must document ${tool}.`);
+  }
 
   check(scenarios.version === 1, 'Eval fixture version must be 1.');
   check(scenarios.scenarios?.length >= 16, 'At least sixteen routing scenarios are required.');

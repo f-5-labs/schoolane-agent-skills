@@ -1,0 +1,11 @@
+interface:
+  display_name: 'SchooLane Admin Operations'
+  short_description: 'Review aggregate school operations safely'
+  default_prompt: 'Use $schoolane-admin-operations to review the aggregate operational health of my SchooLane school without person-level data or writes.'
+dependencies:
+  tools:
+    - type: 'mcp'
+      value: 'schoolane'
+      description: 'Authenticated SchooLane school operations MCP server'
+      transport: 'streamable_http'
+      url: 'https://api.schoolane.app/mcp'
