@@ -1,0 +1,11 @@
+interface:
+  display_name: 'SchooLane Lesson Document Import'
+  short_description: 'Structure uploaded term lesson plans into safe drafts'
+  default_prompt: 'Use $schoolane-lesson-plan-document-import to review this attached lesson-plan document and prepare only the curriculum drafts I approve.'
+dependencies:
+  tools:
+    - type: 'mcp'
+      value: 'schoolane'
+      description: 'Authenticated SchooLane school operations MCP server'
+      transport: 'streamable_http'
+      url: 'https://api.schoolane.app/mcp'

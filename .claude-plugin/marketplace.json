@@ -5,9 +5,14 @@
     {
       "name": "schoolane",
       "source": "./",
-      "description": "Role-aware school context and governed curriculum drafting through SchooLane MCP.",
-      "version": "0.1.0",
+      "description": "Role-aware school context, aggregate administration review, curriculum drafting, and unpublished timetable planning through SchooLane MCP.",
+      "version": "0.4.0",
       "skills": [
+        {
+          "name": "admin-operations",
+          "path": "skills/schoolane-admin-operations",
+          "invoke": "/schoolane:admin-operations"
+        },
         {
           "name": "school-context",
           "path": "skills/schoolane-school-context",
@@ -24,9 +29,19 @@
           "invoke": "/schoolane:lesson-plan-drafting"
         },
         {
+          "name": "lesson-plan-document-import",
+          "path": "skills/schoolane-lesson-plan-document-import",
+          "invoke": "/schoolane:lesson-plan-document-import"
+        },
+        {
           "name": "curriculum-review",
           "path": "skills/schoolane-curriculum-review",
           "invoke": "/schoolane:curriculum-review"
+        },
+        {
+          "name": "timetable-planning",
+          "path": "skills/schoolane-timetable-planning",
+          "invoke": "/schoolane:timetable-planning"
         }
       ]
     }

@@ -1,0 +1,11 @@
+interface:
+  display_name: 'SchooLane Timetable Planning'
+  short_description: 'Prepare governed unpublished timetable drafts'
+  default_prompt: 'Use $schoolane-timetable-planning to inspect, prepare, or revise an unpublished SchooLane timetable draft.'
+dependencies:
+  tools:
+    - type: 'mcp'
+      value: 'schoolane'
+      description: 'Authenticated SchooLane school operations MCP server'
+      transport: 'streamable_http'
+      url: 'https://api.schoolane.app/mcp'
