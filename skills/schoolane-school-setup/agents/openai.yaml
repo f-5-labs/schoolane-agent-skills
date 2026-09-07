@@ -1,7 +1,7 @@
 interface:
   display_name: 'SchooLane School Setup'
   short_description: 'Apply a school template and create teachers and classes'
-  default_prompt: 'Use $schoolane-school-setup to apply the Basic 1–9 pack to my blank school and then create staff and classes through SchooLane MCP.'
+  default_prompt: 'Use $schoolane-school-setup against local synthetic SchooLane users only. Apply the Basic 1–9 pack to a blank school, list grade levels, then create staff and classes. Never use production or RDS live accounts.'
 dependencies:
   tools:
     - type: 'mcp'

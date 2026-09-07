@@ -9,6 +9,12 @@ Use SchooLane as the source of truth. This skill writes school-admin setup recor
 
 Read [tool map](references/tool-map.md) before calling tools.
 
+## Production safety (non-negotiable)
+
+Never use production, staging, or live Royal Diadem / RDS school accounts. Never log in as a real school admin, teacher, or parent. Never call APIs that send OTP or email to real inboxes (`@rds`, royaldiademschool, production admin mailboxes).
+
+Local synthetic users only (`*@schoolane.test` or the local first-time-setup test users). If the MCP origin is `schoolane.app` / `api.schoolane.app` or `.dev.vars` points at remote auth or production D1, stop. Do not run `dev:remote`. Do not seed production.
+
 ## Establish authority
 
 1. Call `get_my_school_context` first.
@@ -30,16 +36,16 @@ If the school already has a year or subjects, do not apply. Inspect with the lis
 ## Teachers, then classes
 
 1. Call `staff_list_teachers`. If the roster is empty, call `staff_create_teacher` for each real staff email. Required: `firstName`, `lastName`, `email`. Do not send or expect a password. The result includes `passwordIssued: false`; the teacher uses forgot-password or a magic link.
-2. Confirm the pack with `academics_list_years`, `academics_list_terms`, `academics_list_subjects`, `academics_list_grade_schemes`, and `assessments_list_templates`.
-3. `academics_create_class` requires `name`, `academicYearId`, `gradeLevelId`, and `classTeacherId`. Get the year id from `academics_list_years` and the teacher id from `staff_list_teachers` or `staff_create_teacher`.
-4. There is **no** grade-level directory tool. `academics_list_grade_levels` does not exist. Global grade levels are not returned by `search` (a “Primary 1” search returns no knowledge hits). If the user does not already have a gradeLevelId from SchooLane, stop and say class creation cannot be finished from MCP alone. Do not invent an id.
-5. After a class exists, call `academics_assign_class_subjects` with `{ classId, subjects: [{ subjectId, teacherId }] }`. The call upserts those pairs and does not remove omitted subjects.
+2. Confirm the pack with `academics_list_years`, `academics_list_terms`, `academics_list_subjects`, `academics_list_grade_levels`, `academics_list_grade_schemes`, and `assessments_list_templates`.
+3. Call `academics_list_grade_levels` to get `{ id, name, levelNumber }` for `academics_create_class`. Grade levels are a global catalog, not school-scoped. Do not create, edit, or delete them through MCP.
+4. `academics_create_class` requires `name`, `academicYearId`, `gradeLevelId`, and `classTeacherId`. Get the year id from `academics_list_years`, the grade-level id from `academics_list_grade_levels`, and the teacher id from `staff_list_teachers` or `staff_create_teacher`. Do not invent ids. `search` still does not return grade levels.
+5. After a class exists, call `academics_assign_class_subjects` with `{ classId, subjects: [{ subjectId, teacherId }] }`. The call upserts those pairs and does not remove omitted subjects. Subjects must already be linked to that grade level (`GetClassAllowedSubjects`).
 
 Create tools are not idempotent. Repeating `staff_create_teacher` or `academics_create_subject` can fail with `already exists` on email or subject code.
 
 ## Hard boundaries
 
-Never call or imply `staff_delete_teacher`, `academics_delete_class`, `academics_delete_subject`, `assessments_delete_template`, `school_templates_delete`, `staff_set_teacher_password`, `school_seed`, or `school_wipe`. There are no delete tools.
+Never call or imply `staff_delete_teacher`, `academics_delete_class`, `academics_delete_grade_level`, `academics_delete_subject`, `assessments_delete_template`, `school_templates_delete`, `staff_set_teacher_password`, `school_seed`, or `school_wipe`. There are no delete tools. There are no grade-level create or edit tools.
 
 Do not use `POST /api/system/schools/:id/seed`. That HTTP path is a system-admin overlay for `isDemo` schools (fake teachers, students, scores, attendance). MCP does not replace it.
 
@@ -48,5 +54,5 @@ Do not create students, parents, enrollments, attendance, fees, messages, or acc
 ## Example requests
 
 - “Apply the Basic 1–9 template to this blank school for 2026/2027 starting 1 September.”
-- “The template finished. Create these four teachers, then make Primary 1 A once we have a grade level id.”
+- “The template finished. Create these four teachers, list grade levels, then make Primary 1 A.”
 - “Assign Numeracy and Science teachers on the class we just created. Do not delete anything.”
