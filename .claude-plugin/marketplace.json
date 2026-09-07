@@ -5,8 +5,8 @@
     {
       "name": "schoolane",
       "source": "./",
-      "description": "Role-aware school context, aggregate administration review, curriculum drafting, and unpublished timetable planning through SchooLane MCP.",
-      "version": "0.4.0",
+      "description": "Role-aware school context, school-admin setup, aggregate administration review, curriculum drafting, and unpublished timetable planning through SchooLane MCP.",
+      "version": "0.5.0",
       "skills": [
         {
           "name": "admin-operations",
@@ -17,6 +17,11 @@
           "name": "school-context",
           "path": "skills/schoolane-school-context",
           "invoke": "/schoolane:school-context"
+        },
+        {
+          "name": "school-setup",
+          "path": "skills/schoolane-school-setup",
+          "invoke": "/schoolane:school-setup"
         },
         {
           "name": "term-scheme-planning",

@@ -1,7 +1,7 @@
 {
   "name": "schoolane",
-  "version": "0.4.0",
-  "description": "Role-aware SchooLane school context, aggregate administration review, curriculum planning, and unpublished timetable drafting.",
+  "version": "0.5.0",
+  "description": "Role-aware SchooLane school context, school-admin setup, aggregate administration review, curriculum planning, and unpublished timetable drafting.",
   "author": { "name": "SchooLane", "url": "https://schoolane.app" },
   "homepage": "https://schoolane.app/ai/mcp",
   "repository": "https://github.com/f-5-labs/schoolane-agent-skills",

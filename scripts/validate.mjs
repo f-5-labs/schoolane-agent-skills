@@ -9,6 +9,7 @@ const expectedSkills = [
   'schoolane-lesson-plan-document-import',
   'schoolane-lesson-plan-drafting',
   'schoolane-school-context',
+  'schoolane-school-setup',
   'schoolane-term-scheme-planning',
   'schoolane-timetable-planning',
 ];
@@ -38,6 +39,30 @@ const expectedTools = [
   'timetable_set_teacher_unavailability_draft',
   'timetable_update_project_settings_draft',
   'ui_render_timetable_preview',
+  'staff_list_teachers',
+  'staff_create_teacher',
+  'staff_update_teacher',
+  'academics_list_subjects',
+  'academics_create_subject',
+  'academics_update_subject',
+  'academics_list_years',
+  'academics_create_year',
+  'academics_update_year',
+  'academics_list_terms',
+  'academics_create_term',
+  'academics_update_term',
+  'academics_create_class',
+  'academics_update_class',
+  'academics_assign_class_subjects',
+  'academics_list_grade_schemes',
+  'academics_create_grade_scheme',
+  'academics_update_grade_scheme',
+  'assessments_list_templates',
+  'assessments_create_template',
+  'assessments_update_template',
+  'school_templates_list',
+  'school_templates_apply',
+  'school_templates_get_apply_job',
 ];
 const documentedUnavailableTools = [
   'timetable_publish',
@@ -46,6 +71,33 @@ const documentedUnavailableTools = [
   'timetable_save_full_draft',
   'timetable_upsert_class',
   'timetable_save_live_class',
+  'staff_delete_teacher',
+  'academics_delete_class',
+  'academics_delete_subject',
+  'assessments_delete_template',
+  'school_templates_delete',
+  'staff_set_teacher_password',
+  'school_seed',
+  'school_wipe',
+  'academics_list_grade_levels',
+];
+const schoolSetupWriteTools = [
+  'staff_create_teacher',
+  'staff_update_teacher',
+  'academics_create_subject',
+  'academics_update_subject',
+  'academics_create_year',
+  'academics_update_year',
+  'academics_create_term',
+  'academics_update_term',
+  'academics_create_class',
+  'academics_update_class',
+  'academics_assign_class_subjects',
+  'academics_create_grade_scheme',
+  'academics_update_grade_scheme',
+  'assessments_create_template',
+  'assessments_update_template',
+  'school_templates_apply',
 ];
 const timetableWriteTools = [
   'timetable_create_project_draft',
@@ -151,6 +203,9 @@ async function validate() {
         match[1]?.startsWith('transport_') ||
         match[1]?.startsWith('interventions_') ||
         match[1]?.startsWith('timetable_') ||
+        match[1]?.startsWith('staff_') ||
+        match[1]?.startsWith('assessments_') ||
+        match[1]?.startsWith('school_') ||
         match[1]?.startsWith('ui_render_')
       ) {
         if (expectedTools.includes(match[1])) referencedTools.add(match[1]);
@@ -175,8 +230,34 @@ async function validate() {
     check(timetableMap.includes(`\`${tool}\``), `Timetable map must document ${tool}.`);
   }
   for (const tool of documentedUnavailableTools) {
-    check(timetableSkill.includes(`\`${tool}\``), `Timetable skill must forbid ${tool}.`);
+    if (tool.startsWith('timetable_')) {
+      check(timetableSkill.includes(`\`${tool}\``), `Timetable skill must forbid ${tool}.`);
+    }
   }
+  const setupSkill = await readFile(path.join(root, 'skills', 'schoolane-school-setup', 'SKILL.md'), 'utf8');
+  const setupMap = await readFile(
+    path.join(root, 'skills', 'schoolane-school-setup', 'references', 'tool-map.md'),
+    'utf8'
+  );
+  for (const tool of schoolSetupWriteTools) {
+    check(setupMap.includes(`\`${tool}\``), `School-setup map must document ${tool}.`);
+  }
+  for (const tool of [
+    'staff_delete_teacher',
+    'academics_delete_class',
+    'school_seed',
+    'school_wipe',
+    'staff_set_teacher_password',
+  ]) {
+    check(setupSkill.includes(`\`${tool}\``), `School-setup skill must forbid ${tool}.`);
+  }
+  check(setupSkill.includes('classTeacherId'), 'School-setup skill must require classTeacherId.');
+  check(setupSkill.includes('gradeLevelId'), 'School-setup skill must explain the gradeLevelId gap.');
+  check(setupSkill.includes('school_not_blank'), 'School-setup skill must mention blank-school apply.');
+  check(
+    setupSkill.includes('`academics_list_grade_levels`'),
+    'School-setup skill must say academics_list_grade_levels does not exist.',
+  );
   check(timetableSkill.includes('baseRevision'), 'Timetable skill must require revision control.');
   check(timetableSkill.includes('idempotency key'), 'Timetable skill must require idempotency handling.');
   const administratorMap = await readFile(
@@ -195,6 +276,9 @@ async function validate() {
   check(new Set(scenarioIds).size === scenarioIds.length, 'Eval scenario ids must be unique.');
   check(scenarioIds.includes('timetable-stale-revision'), 'Timetable stale-revision behavior needs eval coverage.');
   check(scenarioIds.includes('timetable-write-denied'), 'Timetable denied-write behavior needs eval coverage.');
+  check(scenarioIds.includes('apply-basic-1-9-to-blank-school'), 'School-setup template apply needs eval coverage.');
+  check(scenarioIds.includes('school-setup-write-denied'), 'School-setup denied-write behavior needs eval coverage.');
+  check(scenarioIds.includes('class-create-needs-grade-level-id'), 'School-setup gradeLevelId gap needs eval coverage.');
   for (const scenario of scenarios.scenarios ?? []) {
     check(expectedSkills.includes(scenario.skill), `${scenario.id}: unknown skill.`);
     check(Boolean(scenario.request?.trim()), `${scenario.id}: request is required.`);

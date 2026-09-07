@@ -1,7 +1,7 @@
 {
   "name": "schoolane",
-  "version": "0.4.0",
-  "description": "Role-aware school context, aggregate administration reviews, curriculum drafting, and governed timetable drafts through the authenticated SchooLane MCP server.",
+  "version": "0.5.0",
+  "description": "Role-aware school context, school-admin setup, aggregate administration reviews, curriculum drafting, and governed timetable drafts through the authenticated SchooLane MCP server.",
   "author": {
     "name": "SchooLane",
     "email": "support@schoolane.app",
@@ -21,7 +21,7 @@
   "interface": {
     "displayName": "SchooLane",
     "shortDescription": "Review school operations, curriculum, and timetable drafts",
-    "longDescription": "SchooLane gives Codex a governed school-operations connection. Inspect only the school context and aggregate administration data allowed by the signed-in user's current role, prepare reviewed curriculum drafts from lesson documents, and prepare unpublished timetable projects without bypassing human review or publication.",
+    "longDescription": "SchooLane gives Codex a governed school-operations connection. Inspect only the school context and aggregate administration data allowed by the signed-in user's current role, apply a published school-setup pack and create teachers or classes without deletes or passwords, prepare reviewed curriculum drafts from lesson documents, and prepare unpublished timetable projects without bypassing human review or publication.",
     "developerName": "SchooLane",
     "category": "Education",
     "capabilities": ["Read", "Write"],
@@ -30,6 +30,7 @@
     "termsOfServiceURL": "https://schoolane.app/terms",
     "defaultPrompt": [
       "Show me the classes and curriculum I can access",
+      "Apply the Basic 1–9 template to this blank school",
       "Give me an aggregate school administration health check",
       "Review my term scheme and identify planning gaps",
       "Draft next week's lesson plan for one of my classes",

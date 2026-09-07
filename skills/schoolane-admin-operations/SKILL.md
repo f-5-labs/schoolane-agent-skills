@@ -1,6 +1,6 @@
 ---
 name: schoolane-admin-operations
-description: Review aggregate SchooLane fee-balance, transport-readiness, and intervention-workload summaries for the signed-in school administrator. Use for operational health checks and prioritization that must not expose student rows, payment account details, addresses, live locations, case notes, or any write capability.
+description: Review aggregate SchooLane fee-balance, transport-readiness, and intervention-workload summaries for the signed-in school administrator. Use for operational health checks and prioritization that must not expose student rows, payment account details, addresses, live locations, case notes, or any write capability. Not for applying school templates or creating teachers and classes.
 ---
 
 # Review SchooLane administration operations
