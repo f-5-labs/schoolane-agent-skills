@@ -61,6 +61,8 @@ The first SchooLane tool call opens browser sign-in and consent. SchooLane resol
 - Never submit, review, approve, publish, archive, or independently delete curriculum through this bundle.
 - Treat every save as a mutation. A term-scheme draft save can remove omitted draft rows, so preserve rows unless removal was explicitly requested.
 
+School-admin **blank school finish** (apply a published setup pack, then create teachers and classes) is a separate MCP surface in the SchooLane app (`spec/mcp-school-admin-tools.md`). It is not part of this curriculum bundle. When that path is used, connect only as that school's `school_admin` on localhost/`*@schoolane.test` accounts. Never use production, staging, `dev:remote`, or Royal Diadem identities.
+
 ## Validate
 
 ```bash
