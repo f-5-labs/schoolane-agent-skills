@@ -2,9 +2,9 @@
 
 [![Validate](https://github.com/f-5-labs/schoolane-agent-skills/actions/workflows/validate.yml/badge.svg)](https://github.com/f-5-labs/schoolane-agent-skills/actions/workflows/validate.yml)
 
-Role-aware school context, aggregate administration reviews, curriculum review, document-guided lesson planning, and governed timetable drafting through [SchooLane](https://schoolane.app). The bundle connects an agent to the authenticated SchooLane MCP server and adds focused skills for the available governed operations.
+Role-aware school context, school-admin academic setup, aggregate administration reviews, curriculum review, document-guided lesson planning, and governed timetable drafting through [SchooLane](https://schoolane.app). The bundle connects an agent to the authenticated SchooLane MCP server and adds focused skills for the available governed operations.
 
-> Release dependency: administrator operations, lesson-document import, and timetable drafting each require their corresponding SchooLane MCP application release. Do not merge or announce these capabilities until the server change is deployed and its production OAuth/MCP flow is verified.
+> Release dependency: school-admin setup, administrator operations, lesson-document import, and timetable drafting each require their corresponding SchooLane MCP application release. Do not merge or announce these capabilities until the server change is deployed and its production OAuth/MCP flow is verified.
 
 ## Install
 
@@ -48,6 +48,7 @@ The first SchooLane tool call opens browser sign-in and consent. SchooLane resol
 | Skill | Best for |
 | --- | --- |
 | [`schoolane-school-context`](./skills/schoolane-school-context) | Discovering the signed-in user's school, role boundary, classes, terms, subjects, and curriculum records without student data. |
+| [`schoolane-school-setup`](./skills/schoolane-school-setup) | Applying a published Basic 1–9 pack to a blank school, then creating teachers and classes. School-admin only; no deletes, passwords, or `/seed`. |
 | [`schoolane-admin-operations`](./skills/schoolane-admin-operations) | Reviewing aggregate fee, transport, and intervention workload without person-level data or writes. |
 | [`schoolane-term-scheme-planning`](./skills/schoolane-term-scheme-planning) | Reviewing, creating, and revising whole-term scheme drafts with optimistic revision control. |
 | [`schoolane-lesson-plan-drafting`](./skills/schoolane-lesson-plan-drafting) | Writing and saving class-assignment-scoped lesson-plan drafts for human review. |
@@ -61,9 +62,10 @@ The first SchooLane tool call opens browser sign-in and consent. SchooLane resol
 - Read aggregate fee-balance, transport-readiness, and intervention-workload summaries only for a current school administrator with `operations:read` and the active module capability.
 - Write term-scheme and lesson-plan drafts only when `curriculum:write` and the school's active curriculum entitlement both allow it. Document import additionally requires `curriculum:read`, an active teacher assignment or school-administrator role, and explicit review before the append-only scheme and lesson-plan draft steps.
 - Write unpublished timetable drafts only when the caller is a current school administrator, `timetable:write` is consented, and the school's timetable capability is active.
+- Write school-setup records only when the caller is a current school administrator, `school:setup` is consented, and the tools are used against the active school. Apply a published template only to a blank school. Create-class still needs a `gradeLevelId` that MCP cannot list today.
 - Never trust caller-supplied school, role, persona, permission, or teacher identity as authorization.
 - Never expose person-level fee, transport, or intervention data, and never mutate assessments, attendance, enrollment, fees, transport, interventions, messaging, accounts, or any other administration module.
-- Never submit, review, approve, publish, archive, or independently delete curriculum through this bundle. Never publish, delete, import, replace in full, or write a live timetable. Lesson-document imports are private, time-limited staging records, not a general file store.
+- Never submit, review, approve, publish, archive, or independently delete curriculum through this bundle. Never publish, delete, import, replace in full, or write a live timetable. Never delete school-setup records, mint passwords, or call `/seed`. Lesson-document imports are private, time-limited staging records, not a general file store.
 - Treat every save as a mutation. A term-scheme draft save can remove omitted draft rows, so preserve rows unless removal was explicitly requested.
 
 ## Validate
@@ -77,4 +79,4 @@ Connection guidance and the live capability register are at [schoolane.app/ai/mc
 
 ## Release dependency
 
-Keep this PR in draft and do not announce lesson-document import or timetable capability as available until the corresponding server change is deployed and its production OAuth/MCP flow is verified.
+Keep this PR in draft and do not announce school-admin setup, lesson-document import, or timetable capability as available until the corresponding server change is deployed and its production OAuth/MCP flow is verified.

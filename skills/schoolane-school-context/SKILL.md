@@ -1,6 +1,6 @@
 ---
 name: schoolane-school-context
-description: Inspect the signed-in user's role-scoped SchooLane school context, classes, terms, subjects, and curriculum knowledge without student records. Use when a teacher or school administrator asks what school, role, capabilities, classes, academic structure, or curriculum records they can access, or when another SchooLane workflow first needs safe identifiers. Not for curriculum writes, student data, assessment data, attendance, fees, enrollment, messaging, or user administration.
+description: Inspect the signed-in user's role-scoped SchooLane school context, classes, terms, subjects, and curriculum knowledge without student records. Use when a teacher or school administrator asks what school, role, capabilities, classes, academic structure, or curriculum records they can access, or when another SchooLane workflow first needs safe identifiers. Not for curriculum writes, school-setup creates, student data, assessment data, attendance, fees, enrollment, messaging, or user administration.
 ---
 
 # Inspect SchooLane school context
